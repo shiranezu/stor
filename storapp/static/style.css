@@ -1,0 +1,13 @@
+.title{
+    color: aqua;
+    border: 1px solid purple;
+    display: flex;
+    justify-content: center;
+    background-color: purple;
+}
+
+
+
+/* .background{
+    color: purple;
+} */
