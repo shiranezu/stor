@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Customer, Order
-from .forms import AddNewItem,  AddNewCustomer, Login
+from .forms import AddNewItem,  AddNewCustomer, Login, Item
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 
+# @login_required(login_url = '/login/')
 def display_customers(request):
     customers = Customer.objects.all()
     return render(request, "customer.html", {"customers": customers})
@@ -35,6 +37,7 @@ def add_new_item(request):
             return redirect('storapp:customers')
     return render(request, "item.html", {"forms": form})
 
+
 def login_form(request):
     form = Login()
     if request.method == 'POST':
@@ -43,15 +46,22 @@ def login_form(request):
             password = request.POST['password']
             user  = authenticate(username = username, password = password)
             if user:
+                # print("hello")
                 login(request, user)
-                return redirect('storapp:customers')
+                return redirect('/orders/')
             else:
                     return render(request, 'login.html', {'form':form, 'messages':'login failed'})
     return render(request, 'login.html', {'form':form, 'messages': 'login successful'})
         
+# def logout(request):
+#     logout(request)
+#     return redirect('/login/')
             
 
-            
+def get_specific_item(request, pk):
+    item = Item.objects.get(pk=pk)
+    return render(request, 'pk.html', {'item':item})
+
 
 
 # Create your views here.
